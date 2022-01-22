@@ -1,6 +1,16 @@
 const { gql } = require("apollo-server");
 
 const typeDefs = gql`
+    type Mutation {
+        # if false, booking trips failed --check errors
+        bookTrips(launchIds: [ID]!): TripUpdateResponse!
+
+        # if false, cancellation failed --check errors
+        cancelTrip(launchId: ID!): TripUpdateResponse!
+
+        login(email: String): String # login token
+    }
+
     type Query {
         launches: [Launch]!
         launch(id: ID!): Launch
