@@ -1,20 +1,24 @@
-require('dotenv').config();
-const { ApolloServer } = require('apollo-server');
-const typeDefs = require('./schema');
+require("dotenv").config();
+
+const { ApolloServer } = require("apollo-server");
+const typeDefs = require("./schema");
 const { createStore } = require("./utils");
+const resolvers = require("./resolvers");
+
 const LaunchAPI = require("./datasources/launch");
 const UserAPI = require("./datasources/user");
 
-const store = createStore()
+const store = createStore();
 
 const server = new ApolloServer({
-    typeDefs,
-    dataSources: () => ({
-        LaunchAPI: new LaunchAPI(),
-        UserAPI: new UserAPI({ store })
-    })
+  typeDefs,
+  resolvers,
+  dataSources: () => ({
+    launchAPI: new LaunchAPI(),
+    userAPI: new UserAPI({ store }),
+  }),
 });
 
 server.listen().then(({ url }) => {
-    console.log(`seaver ready at ${url}`)
-})
+  console.log(`seaver ready at ${url}`);
+});
